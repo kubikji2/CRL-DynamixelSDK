@@ -249,6 +249,9 @@ bool PortHandlerLinux::setCustomBaudrate(int speed)
     return false;
   }
 
+  // JK THIS fixes issues with newer converter 
+  ss.baud_base = ss.baud_base == 0 ? 24000000 : ss.baud_base;
+
   ss.flags = (ss.flags & ~ASYNC_SPD_MASK) | ASYNC_SPD_CUST;
   ss.custom_divisor = (ss.baud_base + (speed / 2)) / speed;
   int closest_speed = ss.baud_base / ss.custom_divisor;
